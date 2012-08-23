@@ -17,14 +17,14 @@ exports.actions = function(req, res, ss) {
         .exec(function(err, qry) {
           if (!err) {
             if (qry[0]) {
-              res(null, 'already registered');
+              res(null, {status: 'already registered'});
             } else {
               // XXX We need to encrypt the password.
               var user = new User({email: email, password: password});
               user.save(function (err, user) {
                 if (!err) {
                   req.session.setUserId(user._id.toString());
-                  res(null, 'granted');
+                  res(null, {status: 'granted', email: email});
                 } else {
                   res(err, null);
                 }
@@ -43,11 +43,10 @@ exports.actions = function(req, res, ss) {
         .exec(function(err, qry) {
           if (!err) {
             if (qry[0]) {
-              console.log('hello');
               req.session.setUserId(qry[0]._id.toString());
               req.session.email = qry[0].email;
               req.session.save();
-              res(null, 'granted', req.session.email)
+              res(null, {status: 'granted', email: req.session.email, auth: req.session.auth})
             } else {
               res(null, 'denied', null)
             }
@@ -58,7 +57,7 @@ exports.actions = function(req, res, ss) {
     },
     getSession: function() {
       if (req.session && req.session.userId) {
-        res(null, 'granted', req.session.email);
+        res(null, {status: 'granted', email: req.session.email, auth: req.session.auth});
         return true;
       }
       res(null, 'denied', null);

@@ -4,7 +4,12 @@
 		<ul class="dropdown-menu">
 			<li><a>settings</a></li>
 			<li class="divider"></li>
-			<li><a id="add-twitter-feed">add twitter feed (coming soon...)</a></li>
+			{{#twitter}}
+				<li><a href="#">twitter - {{username}}</a></li>
+			{{/twitter}}
+			{{^twitter}}
+				<li><a href="/auth/twitter/" id="add-twitter-feed">add twitter feed (coming soon...)</a></li>
+			{{/twitter}}
 			<li><a id="add-facebook-feed">add facebook feed</a></li>
 			<li><a id="add-google-feed">add google+ feed</a></li>
 			<li><a>add rss feed (coming soon...)</a></li>
