@@ -42,6 +42,7 @@ ea.twitter
 ea.facebook
   .appId('450449624976739')
   .appSecret('e856fdd60f0149e0ecc257914590c1e1')
+  .scope('read_stream') 
   .findOrCreateUser(function(session, accessToken, accessTokExtra, fbUserMetadata) {
     session.services.facebook = fbUserMetadata.username;
     session.save();
