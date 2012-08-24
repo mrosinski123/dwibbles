@@ -3,11 +3,14 @@ var mongoose = require('mongoose');
 var db = mongoose.createConnection('localhost', 'dwibbles');
 var ss = require('socketstream');
 var ea = require('everyauth');
+var request = require('request');
 
 
-// Add mongodb connection to socketstream internal api.
+// Add to internal api.
 ss.api.add('db', db);
 ss.api.add('mongoose', mongoose);
+ss.api.add('ea', ea);
+ss.api.add('request', request);
 
 
 // Use redis store
@@ -16,7 +19,7 @@ ss.session.store.use('redis');
 // Define a single-page client called 'main'
 ss.client.define('main', {
   view: 'app.html',
-  css:  ['libs/bootstrap.css'],
+  css:  ['libs/bootstrap.css', 'app.css'],
   code: ['libs/jquery.min.js', 'libs/bootstrap.js', 'app'],
   tmpl: '*'
 });
@@ -30,13 +33,21 @@ ea.twitter
   .consumerKey('lWc6kG4NPaWYzoKf3M38Ag')
   .consumerSecret('at3gb0aWDbzqfIwph8iRnJLGZ37wxwWOLZMRt4Hk')
   .findOrCreateUser(function(session, accessToken, accessTokenSecret, twitterUserMetadata) {
-    var userName = twitterUserMetadata.screen_name;
-    console.log('Twitter Username is', userName);
-    session.userId = userName;
+    session.services.twitter = twitterUserMetadata.screen_name;
     session.save();
     return true;
   })
   .redirectPath('/')
+
+ea.facebook
+  .appId('450449624976739')
+  .appSecret('e856fdd60f0149e0ecc257914590c1e1')
+  .findOrCreateUser(function(session, accessToken, accessTokExtra, fbUserMetadata) {
+    session.services.facebook = fbUserMetadata.username;
+    session.save();
+    return true;
+  })
+  .redirectPath('/');
 
 // Code Formatters
 ss.client.formatters.add(require('ss-stylus'));

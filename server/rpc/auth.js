@@ -1,7 +1,6 @@
 exports.actions = function(req, res, ss) {
 
   req.use('session');
-  req.use('debug');
 
   var userSchema = new ss.mongoose.Schema({
     email: String,
@@ -24,6 +23,9 @@ exports.actions = function(req, res, ss) {
               user.save(function (err, user) {
                 if (!err) {
                   req.session.setUserId(user._id.toString());
+                  req.session.email = user.email;
+                  req.session.services = req.session.services || {};
+                  req.session.save();
                   res(null, {status: 'granted', email: email});
                 } else {
                   res(err, null);
@@ -44,11 +46,12 @@ exports.actions = function(req, res, ss) {
           if (!err) {
             if (qry[0]) {
               req.session.setUserId(qry[0]._id.toString());
-              req.session.email = qry[0].email;
+              req.session.email = qry[0].email
+              req.session.services = req.session.services || {};
               req.session.save();
-              res(null, {status: 'granted', email: req.session.email, auth: req.session.auth})
+              res(null, {status: 'granted', email: req.session.email, services: req.session.services})
             } else {
-              res(null, 'denied', null)
+              res(null, {status: 'denied'})
             }
           } else {
             res(err, null, null);
@@ -57,10 +60,10 @@ exports.actions = function(req, res, ss) {
     },
     getSession: function() {
       if (req.session && req.session.userId) {
-        res(null, {status: 'granted', email: req.session.email, auth: req.session.auth});
+        res(null, {status: 'granted', email: req.session.email, services: req.session.services});
         return true;
       }
-      res(null, 'denied', null);
+      res(null, {status: 'denied'});
     },
     logout: function() {
       req.session.setUserId(null);

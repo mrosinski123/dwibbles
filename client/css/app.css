@@ -1,0 +1,12 @@
+.dwibble {
+	height: 80px;
+	border: 1px solid #E5E5E5;
+	padding-top: 10px;
+}
+
+.dwibble .img {
+	padding-left: 10px;		
+}
+.dwibble div[class*="span"] {
+	margin-left: 0px;
+}
