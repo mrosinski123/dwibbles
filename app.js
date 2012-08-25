@@ -19,12 +19,15 @@ var oauthCreds = {
     key: '450449624976739',
     secret: 'e856fdd60f0149e0ecc257914590c1e1'
   },
-  facebooomDev: {
+  facebookDev: {
     key: '521282271219601',
-    secret: ' 02c9461535e278081357ec65fe17861c'
+    secret: '02c9461535e278081357ec65fe17861c'
   }
 };
 
+// XXX Not the best way to handle this because twitter creds (key, secret) is
+// needed when signing requests. Create an object that is require'd and put
+// into scope so that it can be imported.
 if (ss.env === 'production') {
   var port = 80;
   var twitterKey = oauthCreds.twitterProd.key;
@@ -45,6 +48,11 @@ ss.api.add('mongoose', mongoose);
 ss.api.add('ea', ea);
 ss.api.add('request', request);
 ss.api.add('moment', moment);
+
+// XXX See XXX above when configuring the environment.
+ss.api.add('twitterKey', twitterKey);
+ss.api.add('twitterSecret', twitterSecret);
+
 
 // Use redis store
 ss.session.store.use('redis');

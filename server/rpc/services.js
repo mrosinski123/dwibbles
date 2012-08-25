@@ -8,8 +8,8 @@ exports.actions = function(req, res, ss) {
     },
     getTwitter: function() {
       var oauth = {
-        consumer_key: 'lWc6kG4NPaWYzoKf3M38Ag', 
-        consumer_secret: 'at3gb0aWDbzqfIwph8iRnJLGZ37wxwWOLZMRt4Hk',
+        consumer_key: ss.twitterKey,
+        consumer_secret: ss.twitterSecret,
         token: req.session.auth.twitter.accessToken,
         token_secret: req.session.auth.twitter.accessTokenSecret
       };
