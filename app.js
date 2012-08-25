@@ -1,17 +1,17 @@
 var http = require('http');
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('localhost', 'dwibbles');
+var moment = require('moment');
 var ss = require('socketstream');
 var ea = require('everyauth');
 var request = require('request');
-
 
 // Add to internal api.
 ss.api.add('db', db);
 ss.api.add('mongoose', mongoose);
 ss.api.add('ea', ea);
 ss.api.add('request', request);
-
+ss.api.add('moment', moment);
 
 // Use redis store
 ss.session.store.use('redis');
@@ -20,7 +20,7 @@ ss.session.store.use('redis');
 ss.client.define('main', {
   view: 'app.html',
   css:  ['libs/bootstrap.css', 'app.css'],
-  code: ['libs/jquery.min.js', 'libs/bootstrap.js', 'app'],
+  code: ['libs/jquery.min.js', 'libs/bootstrap.js', 'libs/moment.js', 'libs/underscore.js', 'app'],
   tmpl: '*'
 });
 

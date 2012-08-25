@@ -10,6 +10,7 @@
     "ss-hogan": "0.x.x",
     "everyauth": "x.x.x",
     "mongoose": "x.x.x",
-    "request": "x.x.x"
+    "request": "x.x.x",
+    "moment": "x.x.x"
   }
 }
