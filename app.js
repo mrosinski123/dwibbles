@@ -5,6 +5,7 @@ var moment = require('moment');
 var ss = require('socketstream');
 var ea = require('everyauth');
 var request = require('request');
+var port = 3000;
 
 // Add to internal api.
 ss.api.add('db', db);
@@ -51,20 +52,23 @@ ea.facebook
   .redirectPath('/');
 
 // Code Formatters
-ss.client.formatters.add(require('ss-stylus'));
 
 // Use server-side compiled Hogan (Mustache) templates. Others engines available
 ss.client.templateEngine.use(require('ss-hogan'));
 
 // Minimize and pack assets if you type: SS_ENV=production node app.js
-if (ss.env === 'production') ss.client.packAssets();
+if (ss.env === 'production') {
+    ss.client.packAssets();
+    port = 80;
+}
 
 ss.http.middleware.prepend(ss.http.connect.bodyParser());
 ss.http.middleware.append(ea.middleware());
 
 // Start web server
 var server = http.Server(ss.http.middleware);
-server.listen(3000);
+server.listen(port);
 
 // Start SocketStream
 ss.start(server);
+
