@@ -1,4 +1,5 @@
 var getServices = $.Deferred();
+var spinner = new Spinner({top: 30, left: 40}).spin();
 var river = [];
 
 var capitalizeFirstLetter = function(value) {
@@ -18,6 +19,8 @@ getServices.done(function(services) {
         for (var i = 0; i <= river.length; i+=1) {
           $('#river').append(ss.tmpl['dwibble'].render(river[i]));
         }
+        spinner.stop();
+        $('#fetching-river').fadeOut(1500);
       });
   }
 });
@@ -48,10 +51,14 @@ var fetchServiceData = function(service) {
 
 ss.rpc('services.getServices', function(err, data) {
   if (!err) {
-    if (!$.isEmptyObject(data))
+    if (!$.isEmptyObject(data)) {
+      // Start up the spinner.
+      $('#river').html(ss.tmpl['fetching-river'].render());
+      $('#spinner').append(spinner.el);
       getServices.resolve(data);
-    else 
+    } else {
       $('#river').html(ss.tmpl['empty-river'].render());
+    }
   } else {
     console.log(err);
   }

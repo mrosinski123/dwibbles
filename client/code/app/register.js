@@ -1,4 +1,4 @@
-$('#register, #login').click(function (evt) {
+$('#register, #login').submit(function (evt) {
   var action = evt.target.id === 'register' ? 'auth.register' : 'auth.authenticate';
 
   ss.rpc(action, $('#login-email').val(), $('#login-password').val(), function(err, data) {

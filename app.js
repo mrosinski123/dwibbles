@@ -61,7 +61,7 @@ ss.session.store.use('redis');
 ss.client.define('main', {
   view: 'app.html',
   css:  ['libs/bootstrap.css', 'app.css'],
-  code: ['libs/jquery.min.js', 'libs/bootstrap.js', 'libs/moment.js', 'libs/underscore.js', 'app'],
+  code: ['libs/jquery.min.js', 'libs/bootstrap.js', 'libs/moment.js', 'libs/underscore.js', 'libs/spin.js', 'app'],
   tmpl: '*'
 });
 
