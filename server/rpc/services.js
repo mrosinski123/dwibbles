@@ -23,6 +23,18 @@ exports.actions = function(req, res, ss) {
       ss.request(url, function(error, response, data) {
         res(null, JSON.parse(data).data);
       });
+    },
+    postToRiver: function(message) {
+      var oauth = {
+        consumer_key: ss.twitterKey,
+        consumer_secret: ss.twitterSecret,
+        token: req.session.auth.twitter.accessToken,
+        token_secret: req.session.auth.twitter.accessTokenSecret,
+      };
+      var url = 'https://api.twitter.com/1/statuses/update.json';
+      ss.request.post({url: url, oauth: oauth, json: {status: message}}, function(error, response, data) {
+        res(null, data); 
+      });
     }
   };
 
